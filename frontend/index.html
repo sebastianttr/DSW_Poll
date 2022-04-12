@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@^4.0.0/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.6.6/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+  </head>
+    <link rel="stylesheet" href="./styles.css">
+
+    <title>DSW - Poll App</title>
+</head>
+
+<body>
+
+    <div id="q-app">
+        <q-layout view="lhr lpR lfr">
+            <q-page-container>
+                <q-page padding class="row justify-center page">
+                    <q-card v-if="showPoll" class="cardStyle q-mb-xl">
+                        <q-card-main>
+                            <h4 class="title">
+                                DSW Poll Application
+                            </h4>
+                            <h5 class="description">
+                                Sebastian Tatar [cc211004] - Made with <img src="https://vuejs.org/images/logo.png" alt="Vue img">
+                            </h5>
+                            <hr style="height:1px;border-width:0;color:gray;background-color:gray">
+
+                          
+                            <div v-for="(questions,index) in formsData.questions" :key="index+100" class="q-mt-xl">
+                                <p class="formsDescription">{{questions.description}}</p>
+
+                                <div v-if="questions.type == 'inputtext'">
+                                    <q-input 
+                                        outlined 
+                                        class="formsInputText" 
+                                        v-model="formsData['models'][questions.key]" 
+                                        :label="questions.inputLabel" />
+                                </div>
+                                <div v-else-if="questions.type == 'dropdown'">
+                                    <q-select 
+                                        standout="bg-grey text-black" 
+                                        v-model="formsData['models'][questions.key]" 
+                                        :options="questions.items" 
+                                        label="Select" 
+                                    />
+                                </div>
+                                <div v-else-if="questions.type == 'slider'">
+                                    <div class="formsSliderContainer">
+                                        <q-slider
+                                            v-model="formsData['models'][questions.key]"
+                                            class="q-mt-md formsSlider"
+                                            label-always
+                                            markers
+                                            :min="questions.options.min"
+                                            :max="questions.options.max">
+                                            <template v-slot:marker-label-group="scope">
+                                                <div
+                                                v-for="marker in scope.markerList"
+                                                :key="marker.index"
+                                                :class="[ `text-deep-orange-${2 + Math.ceil(marker.value / 2) }`, marker.classes ]"
+                                                :style="marker.style"
+                                                @click="model = marker.value"
+                                                >{{ marker.value }}</div>
+                                            </template>                                    
+                                        </q-slider>  
+                                        <div class="formsSliderLabels">
+                                            <p>{{questions.options.minLabel}}</p>
+                                            <p>{{questions.options.maxLabel}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-else-if="questions.type == 'singlechoice'">
+                                    <div class="radioGroup">
+                                        <q-radio 
+                                            v-for="option in questions.items"
+                                            v-model="formsData['models'][questions.key]" 
+                                            checked-icon="task_alt" 
+                                            unchecked-icon="panorama_fish_eye" 
+                                            :val="option.name" 
+                                            :label="option.name" />
+                                      </div>                                  
+                                </div>
+                            </div>  
+                        </q-card-main>
+
+                        <q-card-separator class="q-mb-md"></q-card-separator>
+                        
+                        <q-btn 
+                            rounded 
+                            unelevated 
+                            color="primary" 
+                            icon-right="send" 
+                            class="submitButton" 
+                            label="Submit" 
+                            @click="submit()"
+                        />
+                    </q-card>
+
+                    <q-card v-if="!showPoll && !showDialog" class="cardStyle q-mb-xl">
+                        <q-card-main>
+                            All good. Things will be displayed here
+                        </q-card-main>
+                    </q-card>
+
+
+                    <q-dialog v-model="showDialog" class="dialog" position="bottom" :persistent="true">
+                        <div class="dialogCard">
+                            <div class="dialogCardMain">
+                                <h5 class="startCardTitle">Welcome!</h5>
+                                <h6 class="startCardSubtext">Enter your FH ID to start the poll.</h6>
+                                <div class="startCardInput">
+                                    <q-input outlined v-model="startCardText" label="Your FH ID" />
+                                </div>
+                                <q-btn 
+                                    class="startCardButton" 
+                                    :disabled="startButtonDisabled" 
+                                    unelevated 
+                                    rounded 
+                                    color="primary" 
+                                    label="Start Poll" 
+                                    @click="startPoll()" 
+                                />
+                            </div>
+                        </div>
+                    </q-dialog>
+                </q-page>
+                
+            </q-page-container>
+            
+            <!-- Dialogs -->
+
+        </q-layout>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.6.6/dist/quasar.umd.prod.js"></script>
+
+    <!-- https://quasar-framework.org/components/ -->
+
+    <script src="./script.js"></script>
+
+</body>
+
+</html>

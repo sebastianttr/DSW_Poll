@@ -1,0 +1,116 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    margin: 0;  
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.description {
+    font-size: 20px;
+}
+
+.description > img{
+    height: 15px;
+    width: 15px;
+}
+
+.cardStyle{
+    border-radius: 15px; 
+    padding: 15px;
+    width: 800px; 
+}
+
+.dialogCard{
+    margin: 10px;
+    width: 450px;
+}
+
+
+
+.dialogCardMain{
+    border-radius: 20px;
+    padding: 15px;  
+    background-color: white;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.2);
+}
+
+.startCardTitle{
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.startCardSubtext{
+    font-size: 15px;
+    margin: 0;
+}
+
+.startCardInput{
+    margin: 10px 0px 10px 0px;
+}
+
+.startCardButton{
+    margin-top: 15px;
+    width: 100%;
+}
+
+.formsDescription{
+    font-size: 20px;
+}
+
+.formsInputText{
+    width: 100%;
+}
+
+.formsSliderContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column nowrap;
+    width: 100%;
+}
+
+.formsSliderContainer > .formsSlider{
+    width: 80%;
+}
+
+.formsSliderContainer > .formsSliderLabels{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.radioGroup {
+    margin: 10px 0px 0px 10px;
+    display:flex;
+    justify-content: flex-start;
+    flex-flow: column nowrap;
+    font-size: 16px;
+}
+
+.submitButton{
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+}
+
+@media screen and (max-width:900px) {
+    .cardStyle{
+        width: 90vw;
+    }
+
+    .dialogCard{
+        width: 90vw;
+    }
+}
