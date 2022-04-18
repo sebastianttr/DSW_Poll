@@ -1,28 +1,29 @@
 <?php
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+    
+    // Real cors handling : https://stackoverflow.com/a/18399709
+
+    // Allow from any origin
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        //header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header("Access-Control-Allow-Origin: *");
+        header('Access-Control-Allow-Credentials: true');    
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); 
+    }   
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+            header("Access-Control-Allow-Headers:{$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+    
+        exit(0);
+    } 
+
     header('Content-Type: text/plain');
-    require("config.php");
-    global $conn; //declare a variable with global scope in PHP
+    
+    require 'sqlConnect.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
-
-
-    function connect(){
-        global $conn; // explicitly say that you want to use the global variable in this function
-        global $servername;
-        global $username;
-        global $password;
-        global $dbname;
-        try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password); //error might occur here!
-            // set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e) {
-            echo '{"error" : "Connection failed: ' . $e->getMessage() .'"}';
-        }
-    }
+ 
 
     function insertPollData(){
         $sql = "INSERT INTO Gamer VALUES (0,:p1,:p2,:p3,:p4,:p5,:p6,:p7)";

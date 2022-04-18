@@ -105,10 +105,56 @@
 
                     <q-card v-if="!showPoll && !showDialog" class="cardStyle q-mb-xl">
                         <q-card-main>
-                            All good. Things will be displayed here
-                        </q-card-main>
-                    </q-card>
+                            <div v-for="(question,index) in formsData.questions" :key="index+100" class="q-mt-xl">
+                                <div>
+                                    <p class="formsDescription">Question:</p>
+                                    <p class="formsResultQuestion">{{question.description}}</p>
+                                </div>
 
+                                <div v-if="question.type == 'dropdown'">
+                                    <p>dropdown result here</p>
+                                    <h6>
+                                        30% of gamers (are male)
+                                    </h6>
+                                    <h6>
+                                        70% of gamers (are female)
+                                    </h6>
+                                </div>
+
+                                <div v-if="question.type == 'inputtext'">
+                                    <h6>
+                                        League of Legends
+                                    </h6>
+                                    <h6>
+                                        Call of Duty Warzone
+                                    </h6>
+                                    <h6>
+                                        Rainbow Six Seige (2 people wrote this)
+                                    </h6>
+                                </div>
+
+                                <div v-if="question.type == 'singlechoice'">
+                                    <h6>
+                                        30% of gamers (are male)
+                                    </h6>
+                                    <h6>
+                                        70% of gamers (are female)
+                                    </h6>
+                                </div>
+
+                                <div v-if="question.type == 'slider'">
+                                    <p>slider result here</p>
+                                    <h6>
+                                        The majority of gamers chose (0-10)
+                                    </h6>
+                                </div>
+
+                            </div>
+                        </q-card-main>
+
+                        <q-card-separator class="q-mb-md"></q-card-separator>
+
+                    </q-card>
 
                     <q-dialog v-model="showDialog" class="dialog" position="bottom" :persistent="true">
                         <div class="dialogCard">

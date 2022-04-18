@@ -8,7 +8,6 @@ const questions = [
             "Male",
             "Female",
             "Diverse",
-            "Prefer not to say 👉👈 UwU",
         ]
     },
     {
@@ -74,14 +73,14 @@ const questions = [
 ]
 
 const wsURLs = {
-    insertPollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/insertPollData.php",
+    corsProxy:"https://thingproxy.freeboard.io/fetch/",
+    insertPollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/insertPollData.php/",
     getPollData: "...",
 }
 
 
 // How? Make a request in your browser, check the network tab under Request Headers and get the Cookie property
-const bypassCookie = "netlabs_roadblock=8dc27f568f37ce346ff150266a4c138b860abbf28ea1b3a08398157bcf7facd2"
-
+const bypassCookie = "netlabs_roadblock=dd6fce94ddc80cb77995b2d07516aa143a78cc53950405d37b77fa0c947e294c";
 
 var app = Vue.createApp({
     data(){
@@ -91,7 +90,8 @@ var app = Vue.createApp({
             showDialog:true,
             startCardText:"",
             startButtonDisabled:true,
-            formsData : {questions:questions,models:{}}
+            formsData:{questions:questions,models:{}},
+            netlabCookie:"" 
         }
     },
     methods:{
@@ -111,20 +111,24 @@ var app = Vue.createApp({
                 console.log(JSON.stringify(this.formsData.models))
 
                 // using mozilla fetch api to make post request
+                
                 fetch(wsURLs.insertPollData,{
                     method:"POST",
                     headers:{
-                        'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Cookie': bypassCookie
+                        'Cookie': this.netlabCookie
                     },
                     body: JSON.stringify(this.formsData.models)
                 })
                 .then(res => {
-                    if(res.status == 200){
-                        // move on to the statistics
-                    }
+                    res.text().then(text  => {
+                        console.log(text);
+                    })
                 })
+                .catch(e => {
+                    console.error(e)
+                })
+                
             }
             else {
                 this.$q.notify({
@@ -132,12 +136,25 @@ var app = Vue.createApp({
                     color: 'red'
                   })
             }
+        },
+        setPageCookie(){
+            const cookie = document.cookie;
+            if(cookie.length === 0){
+                console.log("No cookie")
+                this.netlabCookie = bypassCookie;
+            }
+            else {
+                console.log("Netlab cookie found")
+                this.netlabCookie = cookie;
+            }
         }
     },
     beforeMount(){
         questions.forEach((value,index) => {
             this.formsData.models[value.key] = null;
         })
+
+        this.setPageCookie();  
     },
     computed: {
         
