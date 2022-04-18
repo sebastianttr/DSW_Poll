@@ -75,12 +75,13 @@ const questions = [
 const wsURLs = {
     corsProxy:"https://thingproxy.freeboard.io/fetch/",
     insertPollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/insertPollData.php/",
-    getPollData: "...",
+    fetchPollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/fetchPollDataTemplated.php",
 }
 
 
 // How? Make a request in your browser, check the network tab under Request Headers and get the Cookie property
-const bypassCookie = "netlabs_roadblock=dd6fce94ddc80cb77995b2d07516aa143a78cc53950405d37b77fa0c947e294c";
+const bypassCookie = "netlabs_roadblock=a1a1fec39ad74ed107673c8efd8a1010b8470261d1bd3df10201c8e05eb69958";
+
 
 var app = Vue.createApp({
     data(){
@@ -88,9 +89,13 @@ var app = Vue.createApp({
             hasNotEnteredPoll:!Boolean(localStorage.getItem("hasNotEnteredPoll")),
             showPoll:false,
             showDialog:true,
+            pollResultData:null,
             startCardText:"",
             startButtonDisabled:true,
-            formsData:{questions:questions,models:{}},
+            formsData:{
+                questions:questions,
+                models:{}
+            },
             netlabCookie:"" 
         }
     },
@@ -105,13 +110,12 @@ var app = Vue.createApp({
         submit(){
             if(this.validate()){
                 // send data to the WebService
-                console.log("All good!")
+                //console.log("All good!");
                 this.showPoll = false;
                 this.formsData.models.fhid = this.startCardText;
-                console.log(JSON.stringify(this.formsData.models))
+                //console.log(JSON.stringify(this.formsData.models))
 
                 // using mozilla fetch api to make post request
-                
                 fetch(wsURLs.insertPollData,{
                     method:"POST",
                     headers:{
@@ -122,7 +126,8 @@ var app = Vue.createApp({
                 })
                 .then(res => {
                     res.text().then(text  => {
-                        console.log(text);
+                        //console.log(text);
+                        this.loadPollData();
                     })
                 })
                 .catch(e => {
@@ -137,16 +142,65 @@ var app = Vue.createApp({
                   })
             }
         },
+        loadPollData(){
+            let newTemplate = {};
+
+            questions.forEach(item => {
+                if(item.type === "inputtext" || item.type === "slider"){
+                    newTemplate[item.key] = {
+                        type:item.type
+                    }
+                }
+                else {
+                    if(item.type === "dropdown"){
+                        newTemplate[item.key] = {
+                            type:item.type,
+                            items:item.items
+                        }
+                    }
+                    else if(item.type === "singlechoice"){
+                        let newItems = [];
+                        item.items.forEach(el => {
+                            newItems.push(el.name);
+                        })
+                        newTemplate[item.key] = {
+                            type:item.type,
+                            items:newItems
+                        }
+                    }
+                }
+            })
+
+            //console.log(JSON.stringify(newTemplate))
+        
+            fetch(wsURLs.fetchPollData,{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Cookie': this.netlabCookie
+                },
+                body: JSON.stringify(newTemplate)
+            })
+            .then(res => res.json())
+            .then(json => {
+                this.pollResultData = json;
+                //console.log(json)
+            })
+        },
         setPageCookie(){
             const cookie = document.cookie;
             if(cookie.length === 0){
-                console.log("No cookie")
+                //console.log("No cookie")
                 this.netlabCookie = bypassCookie;
             }
             else {
-                console.log("Netlab cookie found")
+                //console.log("Netlab cookie found")
+                //console.log(cookie)
                 this.netlabCookie = cookie;
             }
+
+            // COMMENT THIS OUT FOR IT TO WORK IN PROD.
+            this.netlabCookie = bypassCookie;
         }
     },
     beforeMount(){
@@ -155,6 +209,7 @@ var app = Vue.createApp({
         })
 
         this.setPageCookie();  
+        this.loadPollData();
     },
     computed: {
         
@@ -165,6 +220,7 @@ var app = Vue.createApp({
         }
     }
 })
+
 Quasar.setCssVar("primary",'#4ed130')
 app.use(Quasar,{config:{notify:{}}})
 

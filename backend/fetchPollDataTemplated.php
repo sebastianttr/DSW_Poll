@@ -82,7 +82,6 @@
         }
     }
 
-
     function fetchPollDataTemplated(){
     
         $sqlQuery = "SELECT * FROM Gamer";

@@ -24,7 +24,6 @@
 
     $_POST = json_decode(file_get_contents('php://input'), true);
  
-
     function insertPollData(){
         $sql = "INSERT INTO Gamer VALUES (0,:p1,:p2,:p3,:p4,:p5,:p6,:p7)";
 

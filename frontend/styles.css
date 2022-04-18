@@ -112,6 +112,46 @@ h6{
     font-weight: 800;
 }
 
+.pollDataNotLoaded {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: black;
+}
+
+.dropDownItemText{
+    margin: 10px 0 5px 0;
+    font-size: 20px;
+    padding: 0;
+}
+
+.percentageBar{
+    position: relative;
+    width: 100%;
+    height: 25px;
+    border-radius: 100px;
+    background-color: rgb(151, 150, 150);
+}
+
+.percentageBarFiller{
+    height: inherit;
+    border-radius: 100px;
+    background-color: #4ED130;
+}
+
+.percentageBarText{
+    background-color: rgb(59, 59, 59);
+    position: absolute;
+    color:white;
+    font-size: 12px;
+    text-align: center;
+    width: 40px;
+    top: 3px;
+    border-radius: 100px;
+}
+
 @media screen and (max-width:900px) {
     .cardStyle{
         width: 90vw;

@@ -32,7 +32,6 @@
                             </h5>
                             <hr style="height:1px;border-width:0;color:gray;background-color:gray">
 
-                          
                             <div v-for="(questions,index) in formsData.questions" :key="index+100" class="q-mt-xl">
                                 <p class="formsDescription">{{questions.description}}</p>
 
@@ -105,50 +104,89 @@
 
                     <q-card v-if="!showPoll && !showDialog" class="cardStyle q-mb-xl">
                         <q-card-main>
-                            <div v-for="(question,index) in formsData.questions" :key="index+100" class="q-mt-xl">
-                                <div>
-                                    <p class="formsDescription">Question:</p>
-                                    <p class="formsResultQuestion">{{question.description}}</p>
-                                </div>
+                            <div v-if="pollResultData == null" class="pollDataNotLoaded">
+                                <q-spinner-hourglass
+                                    color="primary"
+                                    size="5em"
+                                />
+                            </div>
+                            <div v-else>
+                                <p class="text-h4 text-weight-bold q-pa-none q-ma-none">Poll results</p>
 
-                                <div v-if="question.type == 'dropdown'">
-                                    <p>dropdown result here</p>
-                                    <h6>
-                                        30% of gamers (are male)
-                                    </h6>
-                                    <h6>
-                                        70% of gamers (are female)
-                                    </h6>
-                                </div>
+                                <div  v-for="(question,index) in formsData.questions" :key="index+100" class="q-mt-xl">
+                                    <div>
+                                        <p class="formsDescription">Question:</p>
+                                        <p class="formsResultQuestion">{{question.description}}</p>
+                                    </div>
 
-                                <div v-if="question.type == 'inputtext'">
-                                    <h6>
-                                        League of Legends
-                                    </h6>
-                                    <h6>
-                                        Call of Duty Warzone
-                                    </h6>
-                                    <h6>
-                                        Rainbow Six Seige (2 people wrote this)
-                                    </h6>
-                                </div>
+                                    <div v-if="question.type == 'dropdown'">
+                                        <div v-for="dropDownItem in question.items">
+                                            <p class="dropDownItemText">{{dropDownItem}}</p>
+                                            <div class="percentageBar">
+                                                <div 
+                                                    class="percentageBarFiller" 
+                                                    :style="'width:' + pollResultData[question.key][dropDownItem].percentage * 100 + '%;'">
+                                                </div>
+                                                <p 
+                                                    class="percentageBarText" 
+                                                    :style="'left:' + (pollResultData[question.key][dropDownItem].percentage * 100 - 4) + '%;'">
+                                                    {{Math.round(pollResultData[question.key][dropDownItem].percentage * 100)}} %
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <div v-if="question.type == 'singlechoice'">
-                                    <h6>
-                                        30% of gamers (are male)
-                                    </h6>
-                                    <h6>
-                                        70% of gamers (are female)
-                                    </h6>
-                                </div>
+                                    <div v-if="question.type == 'inputtext'">
+                                        <ul>
+                                            <li v-for="inputTextItem in pollResultData[question.key]">{{inputTextItem}}</li>
+                                        </ul>
+                                    </div>
 
-                                <div v-if="question.type == 'slider'">
-                                    <p>slider result here</p>
-                                    <h6>
-                                        The majority of gamers chose (0-10)
-                                    </h6>
-                                </div>
+                                    <div v-if="question.type == 'singlechoice'">
+                                        <div v-for="dropDownItem in question.items">
+                                            <p class="dropDownItemText">{{dropDownItem.name}}</p>
+                                            <div class="percentageBar">
+                                                <div 
+                                                    class="percentageBarFiller" 
+                                                    :style="'width:' + pollResultData[question.key][dropDownItem.name].percentage * 100 + '%;'">
+                                                </div>
+                                                <p 
+                                                    class="percentageBarText" 
+                                                    :style="'left:' + (pollResultData[question.key][dropDownItem.name].percentage * 100 - 4) + '%;'">
+                                                    {{Math.round(pollResultData[question.key][dropDownItem.name].percentage * 100)}} %
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div v-if="question.type == 'slider'">
+                                        <div class="formsSliderContainer q-mt-xl">
+                                            <q-slider
+                                                v-model="pollResultData[question.key]"
+                                                class="q-mt-md formsSlider"
+                                                :disable="true"
+                                                label-always
+                                                markers
+                                                :min="question.options.min"
+                                                :max="question.options.max">
+                                                <template v-slot:marker-label-group="scope">
+                                                    <div
+                                                    v-for="marker in scope.markerList"
+                                                    :key="marker.index"
+                                                    :class="[ `text-deep-orange-${2 + Math.ceil(marker.value / 2) }`, marker.classes ]"
+                                                    :style="marker.style"
+                                                    @click="model = marker.value"
+                                                    >{{ marker.value }}</div>
+                                                </template>                                    
+                                            </q-slider>  
+                                            <div class="formsSliderLabels">
+                                                <p>{{question.options.minLabel}}</p>
+                                                <p>{{question.options.maxLabel}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </q-card-main>
 
