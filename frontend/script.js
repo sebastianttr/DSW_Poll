@@ -200,7 +200,7 @@ var app = Vue.createApp({
             }
 
             // COMMENT THIS OUT FOR IT TO WORK IN PROD.
-            this.netlabCookie = bypassCookie;
+            //this.netlabCookie = bypassCookie;
         }
     },
     beforeMount(){
@@ -209,7 +209,7 @@ var app = Vue.createApp({
         })
 
         this.setPageCookie();  
-        this.loadPollData();
+        //this.loadPollData();
     },
     computed: {
         
