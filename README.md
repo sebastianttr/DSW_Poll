@@ -2,6 +2,12 @@
 
 This was the final homework I did in DSW. 
 
+[Link to the poll app](http://cc211004.students.fhstp.ac.at/dsw/hw/frontend/index.html)
+
+> Carefull: I have to use cc211004 instead of flock-xxxx. This is because of how my flock is set up. 
+
+## How does it work?
+
 Quick explanation of how it works/what is going on. 
 
 The frontend gathers the poll data from the user, validates it using a validate function and then it sends it to a PHP script. The PHP Script is called the insertPollData.php and it inserts the data it received in the HTTP POST body into the database. The Vue Function “submit()” takes care of it (Line 149)
@@ -12,4 +18,14 @@ The loadPollData function loads the poll data from the database through a HTTP P
 
 This picture from postman should help understand what is going on. 
 
+![Illustration1](https://imgaz2.staticbg.com/thumb/large/oaupload/banggood/images/C8/31/c5a4ec89-d064-4ed9-90bc-5f5fa804050a.jpg)
+
 And of course, you can update the last poll data you have inserted. To do this, we save the data in the localStorage. Once we update, we take the data out of the localStorage and put it in our forms so the user can change is with ease. The updating happens on a separate PHP script file (updatePollData.php)
+
+## Caveats
+
+It might be that it does not work, so after submitting the data, it shows a rotating hour glass. 
+This is because of the Recaptcha implemented by the the flock system. 
+
+To bypass that, simple call any of the php files, so for example [this one](https://cc211004.students.fhstp.ac.at/dsw/hw/backend/fetchPollData.php)
+
