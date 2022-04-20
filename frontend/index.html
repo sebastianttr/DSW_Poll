@@ -198,19 +198,49 @@
                         <div class="dialogCard">
                             <div class="dialogCardMain">
                                 <h5 class="startCardTitle">Welcome!</h5>
-                                <h6 class="startCardSubtext">Enter your FH ID to start the poll.</h6>
-                                <div class="startCardInput">
-                                    <q-input outlined v-model="startCardText" label="Your FH ID" />
+                                <div v-if="!hasInsertedData">
+                                    <h6 class="startCardSubtext">Enter your FH ID to start the poll.</h6>
+                                    <div class="startCardInput">
+                                        <q-input outlined v-model="startCardText" label="Your FH ID" />
+                                    </div>
+                                    <q-btn 
+                                        class="startCardButton" 
+                                        :disabled="startButtonDisabled" 
+                                        unelevated 
+                                        rounded 
+                                        color="primary" 
+                                        label="Start Poll" 
+                                        @click="startPoll()" 
+                                    />
                                 </div>
-                                <q-btn 
-                                    class="startCardButton" 
-                                    :disabled="startButtonDisabled" 
-                                    unelevated 
-                                    rounded 
-                                    color="primary" 
-                                    label="Start Poll" 
-                                    @click="startPoll()" 
-                                />
+                                <div v-else>
+                                    <h6 class="startCardSubtext">You have already taken part in this poll.</h6>
+                                    <q-btn 
+                                        class="startCardButton"                                         
+                                        unelevated  
+                                        rounded 
+                                        color="primary" 
+                                        label="Change Poll Data" 
+                                        @click="changePollData()" 
+                                    ></q-btn>
+                                    <q-btn 
+                                        class="startCardButton" 
+                                        unelevated 
+                                        rounded 
+                                        color="primary" 
+                                        label="Redo Poll" 
+                                        @click="restartPoll()" 
+                                    ></q-btn>
+                                    <q-btn 
+                                        class="startCardButton" 
+                                        unelevated 
+                                        rounded 
+                                        color="primary" 
+                                        label="Show Poll Result" 
+                                        @click="showPollResult()" 
+                                    ></q-btn>
+                                </div>
+                                
                             </div>
                         </div>
                     </q-dialog>
