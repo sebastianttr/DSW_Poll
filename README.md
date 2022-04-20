@@ -18,7 +18,7 @@ The loadPollData function loads the poll data from the database through a HTTP P
 
 This picture from postman should help understand what is going on. 
 
-![Illustration1](https://imgaz2.staticbg.com/thumb/large/oaupload/banggood/images/C8/31/c5a4ec89-d064-4ed9-90bc-5f5fa804050a.jpg)
+![Illustration1](https://raw.githubusercontent.com/sebastianttr/DSW_Poll/master/fetchData_http_request_visualized.png?token=GHSAT0AAAAAABTKPPLAEPZWR5S3NRKPHT5GYTAB5WQ)
 
 And of course, you can update the last poll data you have inserted. To do this, we save the data in the localStorage. Once we update, we take the data out of the localStorage and put it in our forms so the user can change is with ease. The updating happens on a separate PHP script file (updatePollData.php)
 
