@@ -1,6 +1,6 @@
 # DSW Poll Application
 
-This was the final homework I did in DSW. 
+This was the final homework I did in DSW - FHSTP BCC21. 
 
 [Link to the poll app](http://cc211004.students.fhstp.ac.at/dsw/hw/frontend/index.html)
 
