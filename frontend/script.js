@@ -72,13 +72,13 @@ const questions = [
     },
 ]
 
+// 
 const wsURLs = {
     corsProxy:"https://thingproxy.freeboard.io/fetch/",
     insertPollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/insertPollData.php/",
     fetchPollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/fetchPollDataTemplated.php",
     updatePollData: "http://cc211004.students.fhstp.ac.at/dsw/hw/backend/updatePollData.php"
 }
-
 
 // How? Make a request in your browser, check the network tab under Request Headers and get the Cookie property
 const bypassCookie = "netlabs_roadblock=a1a1fec39ad74ed107673c8efd8a1010b8470261d1bd3df10201c8e05eb69958";
@@ -134,8 +134,9 @@ var app = Vue.createApp({
             this.showDialog = false;
         },
         restartPoll(){
-            this.showPoll = true;
-            this.showDialog = false;
+            //this.showPoll = true;
+            //this.showDialog = false;
+            this.hasInsertedData = false;
             //localStorage.removeItem("userPoll")
         },
         showPollResult(){
